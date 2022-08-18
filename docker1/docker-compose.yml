@@ -1,0 +1,40 @@
+version: '3'
+services:
+  redis:
+    container_name: redis
+    hostname: redis
+    image: redis
+    command: >
+      --include /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - "6379:6379"
+  redis2:
+    container_name: redis2
+    hostname: redis2
+    image: redis
+    command: >
+      --include /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./redis/redis2.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      #      - "6379:6379"
+      - "6380:6379"
+
+  redis-commander:
+    container_name: redis-commander1
+    hostname: redis-commander
+    image: ghcr.io/joeferner/redis-commander:latest
+    restart: always
+    environment:
+          - REDIS_PORT=6379
+          - REDIS_HOST=redis
+          - REDIS_PASSWORD=root123
+
+    ports:
+      - "9633:8081"
+
+      #    command: > edis.conf:/usr/local/etc/redis/redis.conf
+
+#    - REDIS_HOSTS=local:redis:6379
